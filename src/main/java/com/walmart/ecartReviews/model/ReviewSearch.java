@@ -34,6 +34,7 @@ public class ReviewSearch
 	private String title;
 	private String productName;
 	private Ratings ratings;
+	private String shortDescription;
    
 	/*private Ratings ratings;
 	 * 
