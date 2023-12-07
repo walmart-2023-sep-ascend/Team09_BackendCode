@@ -1,0 +1,167 @@
+{
+	"info": {
+		"_postman_id": "2c0eecdb-e559-470b-9690-332814ba0201",
+		"name": "Capstone",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30342115"
+	},
+	"item": [
+		{
+			"name": "Post code to insert review under product",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user\": {\r\n        \"userId\": \"NewUser\",\r\n        \"comment\": \"A new comment.\",\r\n        \"rate\": 5\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8989/api/product/26/comments",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8989",
+					"path": [
+						"api",
+						"product",
+						"26",
+						"comments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all available reviews under product",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8989/api/product/high-ratings/4.9",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8989",
+					"path": [
+						"api",
+						"product",
+						"high-ratings",
+						"4.9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "all pending reviews from temp  collection",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8989/api/product/reviewSearchId/26",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8989",
+					"path": [
+						"api",
+						"product",
+						"reviewSearchId",
+						"26"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search by product and comment",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8989/api/product/6533d00acd0b04b3e7ee102b",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8989",
+					"path": [
+						"api",
+						"product",
+						"6533d00acd0b04b3e7ee102b"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add comment in temp collection",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"productId\": 10,\r\n  \"mail\":\"sri@gmail\",\r\n  \"comments\": [\r\n    {\r\n      \"user\": {\r\n        \"userId\": \"Sridhar1\",\r\n        \"comment\": \"Good Quality\",\r\n        \"rate\": 5\r\n      }\r\n    }\r\n  ]\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8989/api/approval/10/comment",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8989",
+					"path": [
+						"api",
+						"approval",
+						"10",
+						"comment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete comments",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8989/api/approval/delete/12/Sridhar1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8989",
+					"path": [
+						"api",
+						"approval",
+						"delete",
+						"12",
+						"Sridhar1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
