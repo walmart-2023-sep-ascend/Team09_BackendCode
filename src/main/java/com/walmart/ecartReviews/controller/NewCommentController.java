@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -48,23 +49,26 @@ public class NewCommentController {
 
 
     @PostMapping("/{productId}/comment")
-    public Object addNewComment(@PathVariable String productId, @RequestBody NewComment newComment, @RequestHeader Map<String, String> headers) {
-       try {
-           logger.info("" + headers);
-           System.out.println();
-           if (headers.get("user-id-email") != null)
-               return newCommentService.addComment(Integer.parseInt(productId), newComment, headers.get("user-id-email"));
-           else {
-               logger.error(user_mail_not_found);
+    public ResponseEntity<Object> addNewComment(@PathVariable String productId, @RequestBody NewComment newComment, @RequestHeader Map<String, String> headers) {
+        try {
+            logger.info("" + headers);
 
-               return no_user_found;
-           }
-       }
-       catch (NumberFormatException e)
-       {
-           return product_rating_invalid;
-       }
+            if (headers.get("user-id-email") != null) {
+                Object response = newCommentService.addComment(Integer.parseInt(productId), newComment, headers.get("user-id-email"));
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else {
+                logger.error(user_mail_not_found);
+                return new ResponseEntity<>(no_user_found, HttpStatus.BAD_REQUEST);
+            }
+        } catch (NumberFormatException e) {
+            logger.error("Invalid product ID format: " + e.getMessage());
+            return new ResponseEntity<>(product_rating_invalid, HttpStatus.BAD_REQUEST);
+        } catch (HttpMessageNotReadableException e) {
+            logger.error("Invalid JSON payload: " + e.getMessage());
+            return new ResponseEntity<>("Invalid JSON payload: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
+
     @DeleteMapping("/delete/{productId}/{userId}")
     public ResponseEntity<String> deleteComment(@PathVariable String productId, @PathVariable String userId) {
         try {
@@ -75,12 +79,11 @@ public class NewCommentController {
             } else {
                 return new ResponseEntity<>(comment_not_found, HttpStatus.NOT_FOUND);
             }
-        }
-        catch (NumberFormatException e)
-        {
-            return null;
+        } catch (NumberFormatException e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+
     @GetMapping("/productId/{productId}")
     public List<NewComment> getByproductId(@PathVariable String productId) {
         try {

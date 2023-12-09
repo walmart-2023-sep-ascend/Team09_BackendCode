@@ -1,15 +1,15 @@
 package com.walmart.ecartReviews.controller;
-import com.walmart.ecartReviews.EcartReviewsApplication;
 import com.walmart.ecartReviews.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.walmart.ecartReviews.service.ReviewService;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -99,14 +99,30 @@ public class ReviewController {
     }   
     
     @PostMapping("/{reviewSearchId}/comments")
-    public ReviewSearch addCommentToReview(@PathVariable String reviewSearchId,@RequestBody Comment comment) {
+    public ResponseEntity<String> addCommentToReview(@PathVariable String reviewSearchId, @RequestBody User newComment, @RequestHeader Map<String,String> headers){
         try {
-            return reviewService.addCommentToReview(Integer.parseInt(reviewSearchId), comment);
-        }
-        catch (NumberFormatException e)
-        {
-            logger.error(e.getMessage());
-            return null;
+            logger.info("" + headers);
+
+            if (headers.get("approval-status") == null || !headers.get("approval-status").toLowerCase().equals("approved")) {
+                logger.error("===Comment not added to DB as the Review is not approved ===== ");
+                System.out.println(ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Review is not yet approved"));
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Review is not yet approved");
+            }
+
+            if (headers.get("user-id-email") != null) {
+                String result = reviewService.addCommentToReview(Integer.parseInt(reviewSearchId), newComment, headers.get("user-id-email"));
+                // Assuming result is a success message or an error message
+                HttpStatus httpStatus = result.contains("error") ? HttpStatus.BAD_REQUEST : HttpStatus.OK;
+                System.out.println(ResponseEntity.status(httpStatus).body(result));
+                return ResponseEntity.status(httpStatus).body(result);
+            } else {
+                logger.error("==== No user email id details found in the header===== ");
+                System.out.println(ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No user details found"));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No user details found");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(product_rating_invalid));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(product_rating_invalid);
         }
     }
     

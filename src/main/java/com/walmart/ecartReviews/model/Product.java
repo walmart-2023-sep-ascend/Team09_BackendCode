@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.FieldType;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
-@Document(collection ="rating_db")
+@Document(collection ="product_collection")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "rating_db")
+@Document(collection = "product_collection")
 
 //Class
 public class ReviewSearch 
@@ -31,67 +31,45 @@ public class ReviewSearch
 	public void setReviewSearchId(int reviewSearchId) {
 		this.reviewSearchId = reviewSearchId;
 	}
+
 	private String title;
-	private String productName;
-	private Ratings ratings;
+	private int minQuantity;
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	private String gender;
+	private String iconUrl;
 	private String shortDescription;
-    private String iconUrl;
 	private String longDescription;
-	/*private Ratings ratings;
-	 * 
-	 */
-    
-	/**
-	 * @return the productName
-	 */
-	public String getProductName() {
-		return productName;
-	}
-	/**
-	 * @param productName the productName to set
-	 */
-	public void setProductName(String productName) {
-		this.productName = productName;
-	}
-	/**
-	 * @return the title
-	 */
-	public String getTitle() {
-		return title;
-	}
-	/**
-	 * @param title the title to set
-	 */
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	/**
-	 * @return the title
-	 */
-	public String getid() {
-		return id;
-	}
-	/**
-	 * @param title the title to set
-	 */
-	public void setid(String id) {
-		this.id = id;
-	}
-	/**
-	 * @return the ratings
-	 */
-	public Ratings getRatings() {
-		return ratings;
-	}
+	private String productName;
+	private String productCategory;
+	private String inventryStatus;
+	private int availableQuantity;
+	private String purchasable;
+	private List<String> searchTags;
+	private String model;
+	private String brand;
+	private String specification;
+	private int warrantyDuration;
+	private List<String> imageUrls;
+	private int orderLimit;
+	private int returnDates;
+	private int length;
+	private int width;
+	private int height;
+	private double weight;
+	private Ratings ratings;
+	private boolean isElegibileForPromotion;
+	private int discount;
+	private String isHazardous;
+	private String isReturnable;
 
-	/**
-	 * @param ratings the ratings to set
-	 */
-	public void setRatings(Ratings ratings) {
-		this.ratings = ratings;
-	}
-
-	
 
 }
 

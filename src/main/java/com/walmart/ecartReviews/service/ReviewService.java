@@ -2,7 +2,6 @@ package com.walmart.ecartReviews.service;
 
 import java.util.*;
 
-import com.walmart.ecartReviews.EcartReviewsApplication;
 import com.walmart.ecartReviews.model.*;
 import com.walmart.ecartReviews.repository.ProductRepository;
 import org.slf4j.Logger;
@@ -22,7 +21,8 @@ import com.walmart.ecartReviews.repository.ReviewRepository;
 public class ReviewService {
     private static final Logger logger = LoggerFactory.getLogger(ReviewService.class);
 
-
+    @Value("${unknown.product}")
+    private String unknown_product;
     @Value("${product.not.found}")
     private String product_not_found;
     @Value("${ratings.not.found}")
@@ -41,6 +41,7 @@ public class ReviewService {
     @Autowired
     private JavaMailSender javaMailSender;
     private final ProductRepository productRepository;
+
 
     @Autowired
     public ReviewService(ReviewRepository reviewRepository, ProductRepository productRepository) {
@@ -132,27 +133,77 @@ public class ReviewService {
 		return null;
 	}
 */
+public String addCommentToReview(int reviewSearchId, User newComment, String mailId) {
+    try {
+        List<ReviewSearch> existingReview = reviewRepository.findByReviewSearchId(reviewSearchId);
 
-    public ReviewSearch addCommentToReview(int reviewSearchId, Comment comment)
-    {
+        if (existingReview != null && !existingReview.isEmpty()) {
+            // Assuming there's only one review with the given reviewSearchId
+            ReviewSearch review = existingReview.get(0);
+
+            Ratings ratings = review.getRatings();
+            if (ratings == null) {
+                // If there are no ratings yet, create a new Ratings object
+                ratings = new Ratings();
+                review.setRatings(ratings);
+            }
+            List<Comment> comments = ratings.getComments();
+            if (comments == null) {
+                // If there are no comments yet, create a new list
+                comments = new ArrayList<>();
+                ratings.setComments(comments);
+            }
+
+            // Assuming newComment is the Comment object from the request body
+            User newUser = new User();
+            newUser.setUserId(newComment.getUserId());
+            newUser.setComment(newComment.getComment());
+            newUser.setRate(newComment.getRate());
+            // Create a new Comment object and set the User
+            Comment comment = new Comment();
+            comment.setUser(newUser);
+
+            // Add the new comment to the list of comments
+            comments.add(comment);
+            // Save the updated review to the database
+            reviewRepository.save(review);
+            // Fetch the product name using the productId
+            String productName = getProductNameById(reviewSearchId);
+            sendEmail(mailId, productName);
+            return comments_added;
+        } else {
+            // Handle the case when no review is found with the given reviewSearchId
+            // You can throw an exception or return an appropriate response.
+            return null; // For simplicity, returning null here.
+        }
+        // Fetch the product name using the productId
+
+    } catch (Exception e) {
+        logger.error("Error adding comment to review: " + e.getMessage());
+        return null;
+    }
+}
+
+    private String getProductNameById(int productId) {
         try {
-            List<ReviewSearch> existingReview = reviewRepository.findByReviewSearchId(reviewSearchId);
+            // Assuming you have a method to fetch the product by productId
+            List<ReviewSearch> products = reviewRepository.findByReviewSearchId(productId);
 
-            if (existingReview != null) {
-                // Add the comment to the existing review
-                ((ReviewSearch) existingReview).getRatings().getComments().add(comment);
-                // Save the updated review to the database
-                return reviewRepository.save(existingReview);
+            // Check if the list is not empty
+            if (!products.isEmpty()) {
+                // Get the first item from the list
+                ReviewSearch product = products.get(0);
+
+                // Assuming ReviewSearch has a getProductName() method or productName property
+                return product.getProductName();
             } else {
-                // Handle the case when no review is found with the given reviewSearchId
-                // You can throw an exception or return an appropriate response.
-                return null; // For simplicity, returning null here.
+                return unknown_product;
             }
         }
         catch (Exception e)
         {
             System.out.println(e.getMessage());
-            return null;
+            return e.getMessage();
         }
     }
 
@@ -160,7 +211,7 @@ public class ReviewService {
     {
         try
         {
-            List<Product> product = productRepository.findById(productId);
+            List<ReviewSearch> product = reviewRepository.findByReviewSearchId(productId);
             if (product == null || product.isEmpty()) {
                 logger.info(product_not_found);
                 return product_not_found;

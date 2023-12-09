@@ -170,7 +170,7 @@ public class NewCommentService {
             message.setFrom(mail_fromID);
             message.setTo(mailId);
             message.setSubject(mail_review_subject + productName);
-            message.setText(mail_sendBody);
+            message.setText(mail_review_subject);
             javaMailSender.send(message);
         }
         catch (Exception e)
