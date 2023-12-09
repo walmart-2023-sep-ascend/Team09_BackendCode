@@ -105,7 +105,6 @@ public class ReviewController {
 
             if (headers.get("approval-status") == null || !headers.get("approval-status").toLowerCase().equals("approved")) {
                 logger.error("===Comment not added to DB as the Review is not approved ===== ");
-                System.out.println(ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Review is not yet approved"));
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Review is not yet approved");
             }
 
@@ -113,15 +112,12 @@ public class ReviewController {
                 String result = reviewService.addCommentToReview(Integer.parseInt(reviewSearchId), newComment, headers.get("user-id-email"));
                 // Assuming result is a success message or an error message
                 HttpStatus httpStatus = result.contains("error") ? HttpStatus.BAD_REQUEST : HttpStatus.OK;
-                System.out.println(ResponseEntity.status(httpStatus).body(result));
                 return ResponseEntity.status(httpStatus).body(result);
             } else {
                 logger.error("==== No user email id details found in the header===== ");
-                System.out.println(ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No user details found"));
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No user details found");
             }
         } catch (NumberFormatException e) {
-            System.out.println(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(product_rating_invalid));
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(product_rating_invalid);
         }
     }
