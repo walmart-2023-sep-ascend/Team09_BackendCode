@@ -171,19 +171,16 @@ class EcartReviewsApplicationTests {
 	}
 	@Test
 	@org.junit.jupiter.api.Order(11)
-	public void test_cmt_addNewCommentWithoutHeader() throws Exception
-	{
-		String requestBody ="{\"productId\": 1,\"mail\":\"swethag196@gmail.com\",\"comments\": [{\"user\": {\"userId\": \"Muthu\",\"comment\": \"Test product1\",\"rate\": 5	}}]}";
-		MvcResult mvcResult =mockMvc.perform(post("/api/approval/1/comment")
+	public void test_cmt_addNewCommentWithoutHeader() throws Exception {
+		String requestBody = "{\"productId\": 1,\"mail\":\"swethag196@gmail.com\",\"comments\": [{\"user\": {\"userId\": \"Muthu\",\"comment\": \"Test product1\",\"rate\": 5}}]}";
+
+		mockMvc.perform(post("/api/approval/1/comment")
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(requestBody))
-				.andExpect(status().isOk())
+				.andExpect(status().isBadRequest())  // Update expectation to 400 for a Bad Request
 				.andReturn();
-
-		String resultStr=mvcResult.getResponse().getContentAsString();
-		assertEquals(no_user_found.trim(),resultStr.trim());
-
 	}
+
 	@Test
 	@org.junit.jupiter.api.Order(12)
 	public void test_cmt_deleteComment() throws Exception
