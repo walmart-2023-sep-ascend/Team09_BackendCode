@@ -52,7 +52,7 @@ public class NewCommentController {
     public ResponseEntity<Object> addNewComment(@PathVariable String productId, @RequestBody NewComment newComment, @RequestHeader Map<String, String> headers) {
         try {
             logger.info("" + headers);
-            System.out.println(headers.get("cookie"));
+
             String cookieHeader = headers.get("cookie");
 
             if (cookieHeader != null && cookieHeader.contains("Token=")) {
