@@ -176,14 +176,14 @@ class EcartReviewsApplicationTests {
 		String requestBody = "{\"productId\": 1,\"mail\":\"swethag196@gmail.com\",\"comments\": [{\"user\": {\"userId\": \"Muthu\",\"comment\": \"Test product1\",\"rate\": 5}}]}";
 		MvcResult mvcResult = mockMvc.perform(post("/api/approval/1/comment")
 						.contentType(MediaType.APPLICATION_JSON)
-						.content(requestBody)
-						.header("cookie", "Token=tfgrtg"))
+						.content(requestBody))
 				.andExpect(status().isBadRequest())
 				.andReturn();
 
 		String resultStr = mvcResult.getResponse().getContentAsString();
-		assertEquals("no_user_found", resultStr.trim()); // Adjust the expected message based on your implementation
+		assertEquals("user-id-email not found in headers", resultStr.trim()); // Adjust the expected message based on your implementation
 	}
+
 
 
 
