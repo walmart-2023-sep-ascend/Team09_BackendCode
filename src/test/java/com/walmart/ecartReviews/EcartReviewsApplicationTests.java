@@ -178,12 +178,13 @@ class EcartReviewsApplicationTests {
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(requestBody)
 						.header("cookie", "Token=tfgrtg"))
-				.andExpect(status().isBadRequest()) // Update the expected status to isBadRequest
+				.andExpect(status().isBadRequest())
 				.andReturn();
 
 		String resultStr = mvcResult.getResponse().getContentAsString();
-		assertEquals("Expected error message", "no_user_found", resultStr.trim()); // Adjust the expected message based on your implementation
+		assertEquals("no_user_found", resultStr.trim()); // Adjust the expected message based on your implementation
 	}
+
 
 
 
