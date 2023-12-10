@@ -177,12 +177,13 @@ class EcartReviewsApplicationTests {
 		MvcResult mvcResult = mockMvc.perform(post("/api/approval/1/comment")
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(requestBody))
-				.andExpect(status().isBadRequest())
+				.andExpect(status().isUnauthorized()) // Update the expected status to isUnauthorized
 				.andReturn();
 
 		String resultStr = mvcResult.getResponse().getContentAsString();
 		assertEquals("user-id-email not found in headers", resultStr.trim()); // Adjust the expected message based on your implementation
 	}
+
 
 
 
