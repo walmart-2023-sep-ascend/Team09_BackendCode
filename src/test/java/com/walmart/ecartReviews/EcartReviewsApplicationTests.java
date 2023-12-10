@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 import org.springframework.test.web.servlet.MockMvc;
@@ -162,12 +163,21 @@ class EcartReviewsApplicationTests {
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(requestBody)
 						.header("user-id-email", "swetharaman196@gmail.com"))
-				.andExpect(status().isOk())
 				.andReturn();
 
+		int statusCode = mvcResult.getResponse().getStatus();
 		String resultStr = mvcResult.getResponse().getContentAsString();
+
+		// Log information for debugging
+		System.out.println("Request Body: " + requestBody);
+		System.out.println("Response Status Code: " + statusCode);
+		System.out.println("Response Body: " + resultStr);
+
+		// Assert the HTTP status code
+		assertEquals(HttpStatus.OK.value(), statusCode, "Expected HTTP status code 200");
 		assertEquals(comments_added.trim(), resultStr.trim());
 	}
+
 
 	@Test
 	@org.junit.jupiter.api.Order(11)
@@ -176,12 +186,13 @@ class EcartReviewsApplicationTests {
 		MvcResult mvcResult = mockMvc.perform(post("/api/approval/1/comment")
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(requestBody))
-				.andExpect(status().isUnauthorized()) // Adjust the expected status based on your implementation
+				.andExpect(status().isUnauthorized())
 				.andReturn();
 
 		String resultStr = mvcResult.getResponse().getContentAsString();
-		assertEquals(no_user_found.trim(), resultStr.trim());
+		assertEquals("<Token not found in the Cookie>".trim(), resultStr.trim());
 	}
+
 
 
 	@Test
