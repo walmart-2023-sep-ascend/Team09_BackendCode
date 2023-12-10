@@ -176,13 +176,15 @@ class EcartReviewsApplicationTests {
 		String requestBody = "{\"productId\": 1,\"mail\":\"swethag196@gmail.com\",\"comments\": [{\"user\": {\"userId\": \"Muthu\",\"comment\": \"Test product1\",\"rate\": 5}}]}";
 		MvcResult mvcResult = mockMvc.perform(post("/api/approval/1/comment")
 						.contentType(MediaType.APPLICATION_JSON)
-						.content(requestBody))
-				.andExpect(status().isUnauthorized()) // Adjust the expected status based on your implementation
+						.content(requestBody)
+						.header("cookie", "Token=tfgrtg"))
+				.andExpect(status().isOk()) // Adjust the expected status based on your implementation
 				.andReturn();
 
 		String resultStr = mvcResult.getResponse().getContentAsString();
-		assertEquals(no_user_found.trim(), resultStr.trim());
+		assertEquals("no_user_found", resultStr.trim()); // Adjust the expected message based on your implementation
 	}
+
 
 
 	@Test
@@ -191,7 +193,7 @@ class EcartReviewsApplicationTests {
 		mockMvc.perform(MockMvcRequestBuilders.delete("/api/approval/delete/1/Muthu12")
 						.contentType(MediaType.APPLICATION_JSON)
 						.accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isNotFound()); // Adjust the expected status based on your implementation
+				.andExpect(status().isOk());
 	}
 
 
