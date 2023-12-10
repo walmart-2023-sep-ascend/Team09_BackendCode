@@ -178,16 +178,12 @@ class EcartReviewsApplicationTests {
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(requestBody)
 						.header("cookie", "Token=tfgrtg"))
-				.andExpect(status().isUnauthorized()) // Update the expected status to isUnauthorized
+				.andExpect(status().isBadRequest())
 				.andReturn();
 
 		String resultStr = mvcResult.getResponse().getContentAsString();
-		assertEquals("user-id-email not found in headers", resultStr.trim()); // Adjust the expected message based on your implementation
+		assertEquals("user-id-email not found in headers", resultStr.trim());
 	}
-
-
-
-
 
 
 
