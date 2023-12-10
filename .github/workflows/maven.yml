@@ -36,5 +36,5 @@ jobs:
         tags: latest
         registry: docker.io
         dockerfile: Dockerfile
-        username: ${{ secrets.DOCK_USERNAME }}
-        password: ${{ secrets.DOCK_PASSWORD }}
+        username: ${{ secrets.DOC_USERNAME }}
+        password: ${{ secrets.DOC_PASSWORD }}
