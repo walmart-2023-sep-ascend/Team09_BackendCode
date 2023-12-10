@@ -52,13 +52,22 @@ public class NewCommentController {
     public ResponseEntity<Object> addNewComment(@PathVariable String productId, @RequestBody NewComment newComment, @RequestHeader Map<String, String> headers) {
         try {
             logger.info("" + headers);
+            System.out.println(headers.get("cookie"));
+            String cookieHeader = headers.get("cookie");
 
-            if (headers.get("user-id-email") != null) {
-                Object response = newCommentService.addComment(Integer.parseInt(productId), newComment, headers.get("user-id-email"));
-                return new ResponseEntity<>(response, HttpStatus.OK);
+            if (cookieHeader != null && cookieHeader.contains("Token=")) {
+                // Token found in the Cookie header
+                if (headers.get("user-id-email") != null) {
+                    // user-id-email found in headers
+                    Object response = newCommentService.addComment(Integer.parseInt(productId), newComment, headers.get("user-id-email"));
+                    return new ResponseEntity<>(response, HttpStatus.OK);
+                } else {
+                    logger.error("user-id-email not found in headers");
+                    return new ResponseEntity<>("user-id-email not found in headers", HttpStatus.BAD_REQUEST);
+                }
             } else {
-                logger.error(user_mail_not_found);
-                return new ResponseEntity<>(no_user_found, HttpStatus.BAD_REQUEST);
+                logger.error("Token not found in the Cookie header");
+                return new ResponseEntity<>("Token not found in the Cookie header", HttpStatus.UNAUTHORIZED);
             }
         } catch (NumberFormatException e) {
             logger.error("Invalid product ID format: " + e.getMessage());
