@@ -12,6 +12,7 @@ import org.junit.jupiter.api.MethodOrderer.*;
 import org.assertj.core.api.Assertions;
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -157,12 +158,14 @@ class EcartReviewsApplicationTests {
 	@Test
 	@org.junit.jupiter.api.Order(10)
 	public void test_cmt_addNewCommentWithHeader() throws Exception {
+		// Constants for request body, headers, and expected values
 		String requestBody = "{\"productId\": 10,\"mail\":\"swetharaman196@gmail.com\",\"comments\": [{\"user\": {\"userId\": \"Muthu12\",\"comment\": \"Test product1\",\"rate\": 5}}]}";
+		String userIdEmail = "swetharaman196@gmail.com";
 
 		MvcResult mvcResult = mockMvc.perform(post("/api/approval/1/comment")
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(requestBody)
-						.header("user-id-email", "swetharaman196@gmail.com"))
+						.header("user-id-email", userIdEmail))
 				.andReturn();
 
 		int statusCode = mvcResult.getResponse().getStatus();
@@ -175,7 +178,10 @@ class EcartReviewsApplicationTests {
 
 		// Assert the HTTP status code
 		assertEquals(HttpStatus.OK.value(), statusCode, "Expected HTTP status code 200");
-		assertEquals(comments_added.trim(), resultStr.trim());
+
+		// More specific assertions for response content if needed
+		// For example, using JSONAssert for JSON response
+		JSONAssert.assertEquals(comments_added, resultStr, false);
 	}
 
 
