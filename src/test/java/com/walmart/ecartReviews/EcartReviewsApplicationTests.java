@@ -192,7 +192,8 @@ class EcartReviewsApplicationTests {
 	public void test_cmt_deleteComment() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.delete("/api/approval/delete/1/Muthu12")
 						.contentType(MediaType.APPLICATION_JSON)
-						.accept(MediaType.APPLICATION_JSON))
+						.accept(MediaType.APPLICATION_JSON)
+						.header("user-id-email", "sridhar8248@gmail.com"))
 				.andExpect(status().isOk());
 	}
 

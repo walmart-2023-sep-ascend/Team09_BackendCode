@@ -18,9 +18,12 @@ public class NewCommentService {
 
     @Value("${comments.added}")
     private  String comments_added;
+    @Value("${comments.rejected}")
+    private  String comments_rejected;
     @Value("${unknown.product}")
     private String unknown_product;
-
+    @Value("${mail.review.reject}")
+    private  String mail_review_reject;
     @Value("${mail.fromID}")
     private  String mail_fromID;
     @Value("${mail.review.subject}")
@@ -66,7 +69,18 @@ public class NewCommentService {
         }
 
     }
+    public void processRejection(String productId, String mailId, String userId) {
+        try {
+            String productName = getProductNameById(Integer.parseInt(productId));
+            sendEmail(mailId, productName,"reject");
 
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+
+        }
+}
 
     public Object addComment(int productId, NewComment newComment, String mailId) {
         try {
@@ -99,7 +113,7 @@ public class NewCommentService {
             }
             // Fetch the product name using the productId
             String productName = getProductNameById(productId);
-            sendEmail(mailId, productName);
+            sendEmail(mailId, productName,"addcomment");
             return comments_added;
         }
         catch (Exception e)
@@ -162,22 +176,26 @@ public class NewCommentService {
         }
     }
 
-    public void sendEmail(String mailId, String productName) {
-
+    public void sendEmail(String mailId, String productName, String methodName) {
         try {
-
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom(mail_fromID);
             message.setTo(mailId);
-            message.setSubject(mail_review_subject + productName);
-            message.setText(mail_review_subject);
+            if ("addcomment".equals(methodName)) {
+                message.setSubject(mail_review_subject + productName);
+                message.setText(mail_review_subject);
+            } else {
+                message.setSubject(mail_review_reject + productName);
+                message.setText(mail_review_reject);
+            }
+
+
             javaMailSender.send(message);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
+
     public boolean deleteComment(int productId, String userId) {
         // Check if the data exists for the specified productId and userId
         List<NewComment> comments = newCommentRepository.findByProductIdAndCommentsUserUserId(productId, userId);
@@ -193,4 +211,6 @@ public class NewCommentService {
 
         return false;
     }
+
+
 }

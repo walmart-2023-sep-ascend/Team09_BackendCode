@@ -79,8 +79,28 @@ public class NewCommentController {
     }
 
     @DeleteMapping("/delete/{productId}/{userId}")
-    public ResponseEntity<String> deleteComment(@PathVariable String productId, @PathVariable String userId) {
+    public ResponseEntity<String> deleteComment(@PathVariable String productId, @PathVariable String userId,@RequestHeader Map<String, String> headers) {
         try {
+            logger.info("" + headers);
+            String adminResponse = headers.get("admin_response");
+
+            if (adminResponse != null && adminResponse.equalsIgnoreCase("reject")) {
+                if (headers.get("user-id-email") != null) {
+                    // user-id-email found in headers
+
+                    newCommentService.processRejection(productId,headers.get("user-id-email"), userId);;
+
+                } else {
+                    logger.error("user-id-email not found in headers");
+                    return new ResponseEntity<>("user-id-email not found in headers", HttpStatus.BAD_REQUEST);
+                }
+                // Call a service or perform some action for "reject" admin response
+                // For example, you might call a rejection service
+
+
+                // Return an appropriate response
+
+            }
             boolean deleted = newCommentService.deleteComment(Integer.parseInt(productId), userId);
 
             if (deleted) {
@@ -92,6 +112,7 @@ public class NewCommentController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+
 
     @GetMapping("/productId/{productId}")
     public List<NewComment> getByproductId(@PathVariable String productId) {
