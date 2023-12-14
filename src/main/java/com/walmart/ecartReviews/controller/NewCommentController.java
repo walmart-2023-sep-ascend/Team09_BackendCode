@@ -17,6 +17,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = "http://172.172.241.64:3000")
 @RequestMapping("/api/approval")
 public class NewCommentController {
 
