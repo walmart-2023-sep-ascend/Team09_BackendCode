@@ -4,6 +4,7 @@ import java.util.*;
 
 import com.walmart.ecartReviews.model.*;
 import com.walmart.ecartReviews.repository.ProductRepository;
+import jakarta.mail.internet.MimeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
 
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import com.walmart.ecartReviews.repository.ReviewRepository;
 
@@ -276,12 +278,36 @@ public String addCommentToReview(int reviewSearchId, User newComment, String mai
     public void sendEmail(String mailId, String productName)
     {
         try {
-            SimpleMailMessage message = new SimpleMailMessage();
+            //SimpleMailMessage message = new SimpleMailMessage();
+            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "utf-8");
+            String htmlMsg="<html>\n" +
+                    "<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"border:1px solid #58595b;background-color:#fff\" width=\"600\">\n" +
+                    "\t<tbody>\n" +
+                    "\t\t<tr>\n" +
+                    "\t\t\t<td>\n" +
+                    "\t\t\t<p style=\"margin:0;font:14px arial;color:#231f20;padding:0 25px;line-height:18px;text-align:center\"><b>Thanks for sharing your feedback, your feedback matters to us!</b></p>\n" +
+                    "\t\t\t<p style=\"font:14px arial;color:#231f20;padding:0 25px;line-height:18px;text-align:justify\">This is to inform that, your comment has been published to the product page successfully<br>\n" +
+                    "\t\t\t\n" +
+                    "\t\t\t<br>\n" +
+                    "\t\t\tFor any queries or clarification please call us on 9999999999 or write to us at <a href=\"mailto:swethag196@gmail.com\" style=\"color:#231f20\" target=\"_blank\">customerfeedback@ecart.com</a><br>\n" +
+                    "\t\t\t<br>\n" +
+                    "\t\t\tBest Regards,<br>\n" +
+                    "\t\t\teCart System</p>\n" +
+                    "\t\t\t</td>\n" +
+                    "\t\t</tr>\n" +
+                    "\t\t<tr>\n" +
+                    "\t\t\t<td align=\"center\"><img alt=\"\" src=\"https://media.istockphoto.com/id/1406937965/vector/color-megphone-icon-with-word-thank-you-in-white-banner-on-blue-background.jpg?s=612x612&w=0&k=20&c=pN0OFPO1I9K0_2iKT98RYAb0YBXc0PH8rpdvQAvCtEg=\" class=\"CToWUd\" data-bit=\"iit\" width=598 height=98></td>\n" +
+                    "\t\t</tr>\n" +
+                    "\t\t\n" +
+                    "\t</tbody>\n" +
+                    "</table>\n" +
+                    "</html>";
             message.setFrom(mail_fromID);
             message.setTo(mailId);
             message.setSubject(mail_subject + productName);
-            message.setText(mail_subject);
-            javaMailSender.send(message);
+            message.setText(htmlMsg,true);
+            javaMailSender.send(mimeMessage);
         }
         catch (Exception e)
         {
