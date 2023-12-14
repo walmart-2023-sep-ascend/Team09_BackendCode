@@ -229,7 +229,7 @@ public class NewCommentService {
                     "\t\t\t</td>\n" +
                     "\t\t</tr>\n" +
                     "\t\t<tr>\n" +
-                    "\t\t\t<td align=\"center\"><img alt=\"\" src=\"https://st3.depositphotos.com/2274151/36576/v/450/depositphotos_365760986-stock-illustration-review-stamp-review-vintage-blue.jpg\" class=\"CToWUd\" data-bit=\"iit\" width=598 height=150></td>\n" +
+                    "\t\t\t<td align=\"center\"><img alt=\"\" src=\"https://media.istockphoto.com/id/1406937965/vector/color-megphone-icon-with-word-thank-you-in-white-banner-on-blue-background.jpg?s=612x612&w=0&k=20&c=pN0OFPO1I9K0_2iKT98RYAb0YBXc0PH8rpdvQAvCtEg=\" class=\"CToWUd\" data-bit=\"iit\" width=598 height=98></td>\n" +
                     "\t\t</tr>\n" +
                     "\t\t\n" +
                     "\t</tbody>\n" +
