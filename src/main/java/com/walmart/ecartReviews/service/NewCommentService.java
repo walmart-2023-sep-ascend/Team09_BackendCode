@@ -178,24 +178,85 @@ public class NewCommentService {
 
     public void sendEmail(String mailId, String productName, String methodName) {
         try {
-            SimpleMailMessage message = new SimpleMailMessage();
+
+            //SimpleMailMessage message = new SimpleMailMessage();
+            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "utf-8");
+            String approvalMsg="<html>\n" +
+                    "<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"border:1px solid #58595b;background-color:#fff\" width=\"600\">\n" +
+                    "\t<tbody>\n" +
+                    "\t\t<tr>\n" +
+                    "\t\t\t<td>\n" +
+                    "\t\t\t<p style=\"margin:0;font:14px arial;color:#231f20;padding:0 25px;line-height:18px;text-align:center\"><b>Thanks for sharing your feedback, your feedback matters to us!</b></p>\n" +
+                    "\t\t\t<p style=\"font:14px arial;color:#231f20;padding:0 25px;line-height:18px;text-align:justify\">Your comments are currently under review.<br>\n" +
+                    "\t\t\t\n" +
+                    "\t\t\t<br>\n" +
+                    "\t\t\tPlease be patient, we will let you know once your comment has been approved<br>\n" +
+                    "\t\t\t<br>\n" +
+                    "\t\t\t<br>\n" +
+                    "\t\t\tFor any queries or clarification please call us on 9999999999 or write to us at <a href=\"mailto:swethag196@gmail.com\" style=\"color:#231f20\" target=\"_blank\">customerfeedback@ecart.com</a><br>\n" +
+                    "\t\t\t<br>\n" +
+                    "\t\t\tBest Regards,<br>\n" +
+                    "\t\t\teCart System</p>\n" +
+                    "\t\t\t</td>\n" +
+                    "\t\t</tr>\n" +
+                    "\t\t<tr>\n" +
+                    "\t\t\t<td align=\"center\"><img alt=\"\" src=\"https://st3.depositphotos.com/2274151/36576/v/450/depositphotos_365760986-stock-illustration-review-stamp-review-vintage-blue.jpg\" class=\"CToWUd\" data-bit=\"iit\" width=598 height=150></td>\n" +
+                    "\t\t</tr>\n" +
+                    "\t\t\n" +
+                    "\t</tbody>\n" +
+                    "</table>\n" +
+                    "</html>";
+
+            String rejectMsg="<html>\n" +
+                    "<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"border:1px solid #58595b;background-color:#fff\" width=\"600\">\n" +
+                    "\t<tbody>\n" +
+                    "\t\t<tr>\n" +
+                    "\t\t\t<td>\n" +
+                    "\t\t\t<p style=\"margin:0;font:14px arial;color:#231f20;padding:0 25px;line-height:18px;text-align:center\"><b>Thanks for sharing your feedback, your feedback matters to us!</b></p>\n" +
+                    "\t\t\t<p style=\"font:14px arial;color:#231f20;padding:0 25px;line-height:18px;text-align:justify\">Your comments are rejected<br>\n" +
+                    "\t\t\t\n" +
+                    "\t\t\t<br>\n" +
+                    "\t\t\tThank you for submitting your review. However, your review could not be approved as it could not meet our guidelines<br>\n" +
+                    "\t\t\t<br>\n" +
+                    "\t\t\t<br>\n" +
+                    "\t\t\tFor any queries or clarification please call us on 9999999999 or write to us at <a href=\"mailto:swethag196@gmail.com\" style=\"color:#231f20\" target=\"_blank\">customerfeedback@ecart.com</a><br>\n" +
+                    "\t\t\t<br>\n" +
+                    "\t\t\tBest Regards,<br>\n" +
+                    "\t\t\teCart System</p>\n" +
+                    "\t\t\t</td>\n" +
+                    "\t\t</tr>\n" +
+                    "\t\t<tr>\n" +
+                    "\t\t\t<td align=\"center\"><img alt=\"\" src=\"https://st3.depositphotos.com/2274151/36576/v/450/depositphotos_365760986-stock-illustration-review-stamp-review-vintage-blue.jpg\" class=\"CToWUd\" data-bit=\"iit\" width=598 height=150></td>\n" +
+                    "\t\t</tr>\n" +
+                    "\t\t\n" +
+                    "\t</tbody>\n" +
+                    "</table>\n" +
+                    "</html>";
+
             message.setFrom(mail_fromID);
             message.setTo(mailId);
+
             if ("addcomment".equals(methodName)) {
                 message.setSubject(mail_review_subject + productName);
-                message.setText(mail_review_subject);
+                message.setText(approvalMsg,true);
             } else {
                 message.setSubject(mail_review_reject + productName);
-                message.setText(mail_review_reject);
+                message.setText(rejectMsg,true);
             }
 
 
-            javaMailSender.send(message);
-        } catch (Exception e) {
+            //javaMailSender.send(message);
+
+            //message.setText(mail_sendBody);
+
+            javaMailSender.send(mimeMessage);
+        }
+        catch (Exception e)
+        {
             System.out.println(e.getMessage());
         }
     }
-
     public boolean deleteComment(int productId, String userId) {
         // Check if the data exists for the specified productId and userId
         List<NewComment> comments = newCommentRepository.findByProductIdAndCommentsUserUserId(productId, userId);
