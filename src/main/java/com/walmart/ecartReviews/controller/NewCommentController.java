@@ -83,7 +83,7 @@ public class NewCommentController {
     public ResponseEntity<String> deleteComment(@PathVariable String productId, @PathVariable String userId,@RequestHeader Map<String, String> headers) {
         try {
             logger.info("" + headers);
-            String adminResponse = headers.get("admin_response");
+            String adminResponse = headers.get("approval-status");
 
             if (adminResponse != null && adminResponse.equalsIgnoreCase("reject")) {
                 if (headers.get("user-id-email") != null) {
