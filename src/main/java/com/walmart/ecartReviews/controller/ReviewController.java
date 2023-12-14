@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 @RestController
+@CrossOrigin(origins = "http://172.172.241.64:3000")
 @RequestMapping("/api/product")
 public class ReviewController {
 
