@@ -18,7 +18,7 @@ public class EcartReviewsApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(EcartReviewsApplication.class, args);
-		logger.info("dummy====");
+		logger.info("====Team9 Application Started====");
 	}
 	@Bean
 	@LoadBalanced
