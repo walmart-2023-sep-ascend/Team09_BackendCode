@@ -193,7 +193,7 @@ class EcartReviewsApplicationTests {
 		mockMvc.perform(MockMvcRequestBuilders.delete("/api/approval/delete/1/Muthu12")
 						.contentType(MediaType.APPLICATION_JSON)
 						.accept(MediaType.APPLICATION_JSON)
-						.header("admin_response", "reject")
+						.header("approval-status", "reject")
 						.header("user-id-email", "sridhar8248@gmail.com"))
 				.andExpect(status().isOk());
 	}
