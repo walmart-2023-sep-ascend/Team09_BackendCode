@@ -13,6 +13,7 @@ import com.walmart.ecartReviews.model.Product;
 import com.walmart.ecartReviews.service.ProductService;
 
 @RestController
+@CrossOrigin(origins = "http://172.172.241.64:3000")
 @RequestMapping("/product")
 public class ProductController {
 	
