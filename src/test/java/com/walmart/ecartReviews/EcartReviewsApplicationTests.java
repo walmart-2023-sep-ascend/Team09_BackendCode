@@ -161,7 +161,7 @@ class EcartReviewsApplicationTests {
 		MvcResult mvcResult = mockMvc.perform(post("/api/approval/1/comment")
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(requestBody)
-						.header("cookie", "Token=tfgrtg")
+						.header("authorization", "Token=tfgrtg")
 						.header("user-id-email", "swetharaman196@gmail.com"))
 				.andExpect(status().isOk())
 				.andReturn();
@@ -177,7 +177,7 @@ class EcartReviewsApplicationTests {
 		MvcResult mvcResult = mockMvc.perform(post("/api/approval/1/comment")
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(requestBody)
-						.header("cookie", "Token=tfgrtg"))
+						.header("authorization", "Token=tfgrtg"))
 				.andExpect(status().isBadRequest())
 				.andReturn();
 
@@ -193,6 +193,7 @@ class EcartReviewsApplicationTests {
 		mockMvc.perform(MockMvcRequestBuilders.delete("/api/approval/delete/1/Muthu12")
 						.contentType(MediaType.APPLICATION_JSON)
 						.accept(MediaType.APPLICATION_JSON)
+						.header("admin_response", "reject")
 						.header("user-id-email", "sridhar8248@gmail.com"))
 				.andExpect(status().isOk());
 	}
