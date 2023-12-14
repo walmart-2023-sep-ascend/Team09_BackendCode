@@ -53,7 +53,7 @@ public class NewCommentController {
         try {
             logger.info("" + headers);
 
-            String cookieHeader = headers.get("cookie");
+            String cookieHeader = headers.get("authorization");
 
             if (cookieHeader != null && cookieHeader.contains("Token=")) {
                 // Token found in the Cookie header
