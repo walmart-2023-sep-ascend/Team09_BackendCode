@@ -1,0 +1,234 @@
+{
+	"info": {
+		"_postman_id": "9323a41c-f6cd-45d2-a4f0-9d4bd099fd66",
+		"name": "Team9 Rating Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "18250293"
+	},
+	"item": [
+		{
+			"name": "Add comment in temp collection",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "user-id-email",
+						"value": "danicoolbug@gmail.com",
+						"type": "text"
+					},
+					{
+						"key": "Cookie",
+						"value": "Token=98139hqwkjdhaye89q2983192",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"comments\": [\r\n    {\r\n      \"user\": {\r\n        \"userId\": \"Sridhar\",\r\n        \"comment\": \"Final test before submission\",\r\n        \"rate\": 5\r\n      }\r\n    }\r\n  ]\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://customerrating.eastus.cloudapp.azure.com:9801/api/approval/10/comment"
+			},
+			"response": []
+		},
+		{
+			"name": "all pending reviews from temp  collection",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": "http://customerrating.eastus.cloudapp.azure.com:9801/api/approval/"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete comments",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://customerrating.eastus.cloudapp.azure.com:9801/api/approval/delete/29/Sridhar"
+			},
+			"response": []
+		},
+		{
+			"name": "View exsiting comment",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "user-email-id",
+						"value": "rajesh.ramakrishnan16589@gmail.com",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://customerrating.eastus.cloudapp.azure.com:9801/api/product/1/by-ratings/1"
+			},
+			"response": []
+		},
+		{
+			"name": "Exception - No Product Found",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "user-email-id",
+						"value": "rajesh.ramakrishnan16589@gmail.com",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://customerrating.eastus.cloudapp.azure.com:9801/api/product/560/by-ratings/3"
+			},
+			"response": []
+		},
+		{
+			"name": "Exception - No Rating Found",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "user-email-id",
+						"value": "rajesh.ramakrishnan16589@gmail.com",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://customerrating.eastus.cloudapp.azure.com:9801/api/product/5/by-ratings/10123"
+			},
+			"response": []
+		},
+		{
+			"name": "New comment",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "user-id-email",
+						"value": "danicoolbug@gmail.com",
+						"type": "text"
+					},
+					{
+						"key": "approval-status",
+						"value": "approved",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\n    {\n            \"user\": {\n              \"userId\": \"Vivek1\",\n              \"comment\": \"Good Product\",\n              \"rate\": 5\n            }\n    }\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://customerrating.eastus.cloudapp.azure.com:9801/api/product/45/comment/"
+			},
+			"response": []
+		},
+		{
+			"name": "Exception - without approval",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "user-id-email",
+						"value": "danicoolbug@gmail.com",
+						"type": "text"
+					},
+					{
+						"key": "approval-status",
+						"value": "approved",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\n    {\n            \"user\": {\n              \"userId\": \"Yoga test\",\n              \"comment\": \"review product for my TEST CASE use\",\n              \"rate\": 30\n            }\n    }\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://customerrating.eastus.cloudapp.azure.com:9801/api/product/45/comment/"
+			},
+			"response": []
+		},
+		{
+			"name": "Exception - without email id header",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "user-id-email",
+						"value": "danicoolbug@gmail.com",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "approval-status",
+						"value": "approved",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\n    {\n            \"user\": {\n              \"userId\": \"Yoya test\",\n              \"comment\": \"review product for my TEST CASE use\",\n              \"rate\": 3\n            }\n    }\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://customerrating.eastus.cloudapp.azure.com:9801/api/product/1/comment/"
+			},
+			"response": []
+		}
+	]
+}
